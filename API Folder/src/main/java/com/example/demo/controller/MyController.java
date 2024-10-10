@@ -6,13 +6,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 // import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
+
+import com.example.demo.Algorithm;
 import com.example.demo.model.MyRequest;
+import com.example.demo.model.ResultPath;
 
 @RestController
+@CrossOrigin(origins = "http://localhost:5173")
 public class MyController {
-
     @PostMapping("/data")
-    public String receiveData(@RequestBody MyRequest request) {
-        return "Received param1: " + request.getParam1() + ", param2: " + request.getParam2();
+    public ResultPath receiveData(@RequestBody MyRequest request)
+    {
+        Algorithm algo = new Algorithm();
+        ResultPath res = algo.findPath(request);
+        return res;
     }
 }
