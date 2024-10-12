@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 
-import com.example.demo.Algorithm;
+// import com.example.demo.Algorithm;
 import com.example.demo.model.MyRequest;
 import com.example.demo.model.ResultPath;
 
@@ -18,8 +18,9 @@ public class MyController {
     @PostMapping("/data")
     public ResultPath receiveData(@RequestBody MyRequest request)
     {
-        Algorithm algo = new Algorithm();
-        ResultPath res = algo.findPath(request);
-        return res;
+        return null;
+        // Algorithm algo = new Algorithm();
+        // ResultPath res = algo.findPath(request);
+        // return res;
     }
 }

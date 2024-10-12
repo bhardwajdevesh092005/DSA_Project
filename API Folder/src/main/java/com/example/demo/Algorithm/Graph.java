@@ -22,9 +22,8 @@ class Node {
         if (this == obj) return true;
         if (!(obj instanceof Node)) return false;
         Node other = (Node) obj;
-        return Double.compare(other.latitude, latitude) == 0 &&
-               Double.compare(other.longitude, longitude) == 0 &&
-               name.equals(other.name);
+        return Math.abs(other.latitude-latitude) < 1e-8d && Math.abs(other.longitude-longitude) < 1e-8d;
+            //    name.equals(other.name);
     }
 
     @Override
@@ -66,6 +65,19 @@ public class Graph {
     public List<Edge> getNeighbors(Node node) {
         List<Edge> neighbors = adjList.get(node);
         return (neighbors != null) ? neighbors : new ArrayList<>();
+    }
+
+    public Node getNode(Node node)
+    {
+        for(Node x:this.getNodes())
+        {
+            if(node.equals(x))
+            {
+                System.out.println("Found found found");
+                return x;
+            }
+        }
+        return null;
     }
 
     // Method to get all nodes in the graph

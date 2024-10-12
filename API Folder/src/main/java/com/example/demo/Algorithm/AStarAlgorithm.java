@@ -10,13 +10,19 @@ class AStarAlgorithm {
 
     // A* search algorithm implementation
     public static List<Node> aStar(Graph graph, Node start, Node goal) {
-        for (Node node : graph.getNodes()) {
-            System.out.println("Node: " + node.latitude + " " + node.longitude);
-            for (Edge edge : graph.getNeighbors(node)) {
-                System.out.println("  Edge to: " + edge.end.latitude +" " + edge.end.longitude+ " Cost: " + edge.cost);
-            }
+        // for (Node node : graph.getNodes()) {
+        //     System.out.println("Node: " + node.latitude + " " + node.longitude);
+        //     System.out.println(graph.getNeighbors(node).size());
+        //     for (Edge edge : graph.getNeighbors(node)) {
+        //         System.out.println("  Edge to: " + edge.end.latitude +" " + edge.end.longitude+ " Cost: " + edge.cost);
+        //     }
+        // }
+        start = graph.getNode(start);
+        goal = graph.getNode(goal);
+        if(start == null || goal == null)
+        {
+            return null;
         }
-        
         // Early exit if start and goal are the same
         if (start.equals(goal)) {
             return Collections.singletonList(start);
@@ -45,16 +51,17 @@ class AStarAlgorithm {
 
             // If we reach the goal, reconstruct and return the path
             if (current.equals(goal)) {
-                return reconstructPath(cameFrom, current);
+                System.out.println("End Matched");
+                return reconstructPath(cameFrom, goal,current);
             }
 
             // Explore the neighbors of the current node
             for (Edge edge : graph.getNeighbors(current)) {
                 Node neighbor = edge.end;
                 double tentative_gScore = gScore.getOrDefault(current, Double.POSITIVE_INFINITY) + edge.cost;
-                System.out.println("Current Node: " + current);
-                System.out.println("gScore: " + gScore);
-                System.out.println("fScore: " + fScore);
+                // System.out.println("Current Node: " + current);
+                // System.out.println("gScore: " + gScore);
+                // System.out.println("fScore: " + fScore);
 
                 // If a shorter path to the neighbor is found
                 if (tentative_gScore < gScore.getOrDefault(neighbor, Double.POSITIVE_INFINITY)) {
@@ -70,9 +77,13 @@ class AStarAlgorithm {
                 }
             }
         }
-
+        for(Node x:cameFrom.keySet())
+        {
+            System.out.println(x);
+            System.out.println(cameFrom.get(x));
+        }
         // If no path is found, return null
-        return null;
+        return reconstructPath(cameFrom, goal,start);
     }
 
     // Haversine formula to calculate the great-circle distance between two points
@@ -88,7 +99,7 @@ class AStarAlgorithm {
     }
 
     // Reconstruct the path from the goal node back to the start node
-    private static List<Node> reconstructPath(Map<Node, Node> cameFrom, Node current) {
+    private static List<Node> reconstructPath(Map<Node, Node> cameFrom, Node current,Node start) {
         List<Node> path = new ArrayList<>();
         path.add(current); // Include the goal node
         while (cameFrom.containsKey(current)) {
@@ -96,6 +107,11 @@ class AStarAlgorithm {
             path.add(current);
         }
         Collections.reverse(path); // Reverse the path to get it from start to goal
+        // for(Node x:path)
+        // {
+        //     System.out.println(Double.toString(x.latitude) + " " + Double.toString(x.longitude));
+        // }
+        System.out.println("Path formed");
         return path;
     }
 }
