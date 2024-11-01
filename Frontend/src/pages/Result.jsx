@@ -54,23 +54,35 @@ function Result () {
     setPositions2(prev => prev.map(elem => [elem[1], elem[0]]))
   }, [])
   // setPositions((prev)=>(prev.map(elem=>[elem[1],elem[0]])));
-  const [path,setPath] = useState([{latitude:28.4520255,longitude: 77.0437478}])
-  const data = {
-    loc1: { latitude: 28.4520255,longitude: 77.0437478},
-    loc2: { latitude: 28.4519114,longitude: 77.0439112}
+  const [path, setPath] = useState([])
+  const [data, setData] = useState({
+    loc1: { latitude: 28.4520255, longitude: 77.0437478 },
+    loc2: { latitude: 28.4519114, longitude: 77.0439112 }
+  })
+  const data_call = async () => {
+    await fetch('http://localhost:5174/data', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json' // Specify the content type
+      },
+      body: JSON.stringify(data)
+    })
+      .then(res => res.json())
+      .then(data => {
+        setPath(data.result);
+        console.log(data.result);
+      })
   }
-  const data_call = async ()=>{await fetch('http://localhost:5174/data', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json' // Specify the content type
-    },
-    body: JSON.stringify(data)
-  }).then(res=>res.json()).then(data=>{setPath(data.result);console.log(data.result);});}
-  useEffect(()=>{data_call();return ()=>{console.log(123);}},[123]);
-//   data_call();
+  useEffect(() => {
+    data_call()
+    return () => {
+      console.log(123)
+    }
+  }, [123])
+  //   data_call();
   return (
     <MapContainer
-      center={path?[path[0].latitude,path[0].longitude]:[77.0437478, 28.4520255]}
+      center={[28.4510506, 77.0439059]}
       zoom={23}
       style={{ height: '100vh', width: '100%' }}
     >
@@ -78,7 +90,7 @@ function Result () {
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Polyline positions={path.map((elem)=>{return [elem.latitude,elem.longitude]})} color='blue'/>
+      <Polyline positions={path.map(e=>[e.latitude,e.longitude])} color='blue' />
       {/* <Polyline positions={positions2} color='blue' /> */}
     </MapContainer>
   )
