@@ -54,10 +54,10 @@ function Result () {
     setPositions2(prev => prev.map(elem => [elem[1], elem[0]]))
   }, [])
   // setPositions((prev)=>(prev.map(elem=>[elem[1],elem[0]])));
-  const [path, setPath] = useState([])
+  const [path, setPath] = useState(null)
   const [data, setData] = useState({
-    loc1: { latitude: 28.4520255, longitude: 77.0437478 },
-    loc2: { latitude: 28.4519114, longitude: 77.0439112 }
+    loc1: { longitude:77.0432859, latitude:28.450458 },
+    loc2: { longitude:77.0437478, latitude:28.4520255}
   })
   const data_call = async () => {
     await fetch('http://localhost:5174/data', {
@@ -69,8 +69,9 @@ function Result () {
     })
       .then(res => res.json())
       .then(data => {
-        setPath(data.result);
+        setPath(data.result.length?data.result:null);
         console.log(data.result);
+        // console.log(data.result[0].latitude);
       })
   }
   useEffect(() => {
@@ -82,7 +83,7 @@ function Result () {
   //   data_call();
   return (
     <MapContainer
-      center={[28.4510506, 77.0439059]}
+      center={path?[path[0].latitude,path[0].longitude]:[28.4510506, 77.0439059]}
       zoom={23}
       style={{ height: '100vh', width: '100%' }}
     >
@@ -90,7 +91,7 @@ function Result () {
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         attribution='&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
       />
-      <Polyline positions={path.map(e=>[e.latitude,e.longitude])} color='blue' />
+      <Polyline positions={path?path.map(e=>[e.latitude,e.longitude]):[[28.4510506, 77.0439059]]} color='blue' />
       {/* <Polyline positions={positions2} color='blue' /> */}
     </MapContainer>
   )

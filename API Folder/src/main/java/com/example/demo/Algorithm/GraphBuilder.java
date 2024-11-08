@@ -3,8 +3,8 @@ package com.example.demo.Algorithm;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-
-class GraphBuilder {
+import com.example.demo.model.Node;
+public class GraphBuilder {
     public static Graph buildGraphFromGeoJSON(String filePath) {
         JsonObject geoJson = GeoJSONParser.parseGeoJSON(filePath);
         Graph graph = new Graph();

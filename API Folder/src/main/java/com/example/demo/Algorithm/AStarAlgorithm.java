@@ -1,8 +1,17 @@
 package com.example.demo.Algorithm;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Set;
 
-class AStarAlgorithm {
+import com.example.demo.model.Node;
+public class AStarAlgorithm {
     // Heuristic function for estimating the cost from a node to the goal
     public static double heuristic(Node a, Node b) {
         return haversine(a.latitude, a.longitude, b.latitude, b.longitude);
@@ -106,6 +115,7 @@ class AStarAlgorithm {
             current = cameFrom.get(current);
             path.add(current);
         }
+        System.out.println(start.latitude);
         Collections.reverse(path); // Reverse the path to get it from start to goal
         // for(Node x:path)
         // {
