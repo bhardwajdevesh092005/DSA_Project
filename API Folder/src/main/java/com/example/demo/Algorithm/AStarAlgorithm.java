@@ -10,6 +10,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import com.example.demo.model.Edge;
 import com.example.demo.model.Node;
 public class AStarAlgorithm {
     // Heuristic function for estimating the cost from a node to the goal
@@ -26,8 +27,6 @@ public class AStarAlgorithm {
         //         System.out.println("  Edge to: " + edge.end.latitude +" " + edge.end.longitude+ " Cost: " + edge.cost);
         //     }
         // }
-        start = graph.getNode(start);
-        goal = graph.getNode(goal);
         if(start == null || goal == null)
         {
             return null;

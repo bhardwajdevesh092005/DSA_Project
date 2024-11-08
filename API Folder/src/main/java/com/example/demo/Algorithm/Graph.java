@@ -6,19 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import com.example.demo.model.Edge;
 import com.example.demo.model.Node;
-
-class Edge {
-    Node start;
-    Node end;
-    double cost;
-
-    public Edge(Node start, Node end, double cost) {
-        this.start = start;
-        this.end = end;
-        this.cost = cost;
-    }
-}
 
 public class Graph {
     private final Map<Node, List<Edge>> adjList = new HashMap<>();
@@ -38,11 +27,11 @@ public class Graph {
         return (neighbors != null) ? neighbors : new ArrayList<>();
     }
 
-    public Node getNode(Node node)
+    public Node getNode(double latitude,double longitude)
     {
         for(Node x:this.getNodes())
         {
-            if(node.equals(x))
+            if(Math.abs(x.latitude-latitude) < 1e-8d && Math.abs(x.longitude-longitude) < 1e-8d)
             {
                 System.out.println("Found found found");
                 return x;
@@ -51,9 +40,8 @@ public class Graph {
         return null;
     }
 
-    // Method to get all nodes in the graph
     public Set<Node> getNodes() {
-        return adjList.keySet(); // Return the set of nodes
+        return adjList.keySet();
     }
 }
 
