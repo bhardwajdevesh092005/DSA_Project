@@ -16,7 +16,7 @@ import L from 'leaflet'
 //   iconUrl: require('leaflet/dist/images/marker-icon.png'),
 //   shadowUrl: require('leaflet/dist/images/marker-shadow.png'),
 // });
-const Map = () => {
+const Map = ({Location,onLocationChange}) => {
     const [latlang,setLatLang] = useState([28.4595, 77.0266]);
     useEffect(() => {
         navigator.geolocation.getCurrentPosition((location)=>{setLatLang([location.coords.latitude,location.coords.longitude])});
@@ -28,6 +28,7 @@ const Map = () => {
             click: event => {
                 const { lat, lng } = event?event.latlng:{lat:28.4595, lng:77.0266};
                 setPosition([lat, lng])
+                onLocationChange({lat,lng});    
                 console.log(`Latitude: ${lat}, Longitude: ${lng}`)
             }
         })
