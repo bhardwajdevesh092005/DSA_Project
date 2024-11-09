@@ -19,7 +19,7 @@ public class GeoJSONParser {
         try {
             return new String(Files.readAllBytes(Paths.get(filePath)));
         } catch (IOException e) {
-            e.printStackTrace();
+            // e.printStackTrace();
             return null;
         }
     }

@@ -1,16 +1,18 @@
 package com.example.demo.Algorithm;
 
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.example.demo.model.Node;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
-import com.example.demo.model.Node;
 public class GraphBuilder {
+    private static final List<Node> node_list = new ArrayList<>();
+    public static Graph graph = new Graph();
     public static Graph buildGraphFromGeoJSON(String filePath) {
         JsonObject geoJson = GeoJSONParser.parseGeoJSON(filePath);
-        Graph graph = new Graph();
-
         JsonArray features = geoJson.getAsJsonArray("features");
-
         for (int i = 0; i < features.size(); i++) {
             JsonObject feature = features.get(i).getAsJsonObject();
             JsonObject geometry = feature.getAsJsonObject("geometry");
@@ -24,6 +26,19 @@ public class GraphBuilder {
                 processLineStringFeature(graph, coordinates, i);
             }
         }
+        graph.tree = new KDTree(node_list);
+
+        for(Node x:graph.getNodes())
+        {
+            List<Node> neighbors = graph.tree.findKNearestNeighbors(x, 1);
+            for(Node y:neighbors)
+            {
+                double distance = AStarAlgorithm.haversine(x.latitude, x.longitude, y.latitude, y.longitude);
+                graph.addEdge(x, y,distance);
+            }
+        }
+
+        System.out.println("Graph Built successfully");
         return graph;
     }
 
@@ -39,6 +54,7 @@ public class GraphBuilder {
             double lat = latlon.get(1).getAsDouble();
 
             Node node = new Node("Node_" + featureIndex + "_" + j, lat, lon);
+            node_list.add(node);
             graph.addNode(node);
 
             if (prevNode != null) {
@@ -69,6 +85,7 @@ public class GraphBuilder {
             double lat = latlon.get(1).getAsDouble();
 
             Node node = new Node("LineNode_" + featureIndex + "_" + j, lat, lon);
+            node_list.add(node);
             graph.addNode(node);
 
             if (prevNode != null) {

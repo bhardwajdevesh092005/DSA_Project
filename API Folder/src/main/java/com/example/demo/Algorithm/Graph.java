@@ -10,7 +10,9 @@ import com.example.demo.model.Edge;
 import com.example.demo.model.Node;
 
 public class Graph {
-    private final Map<Node, List<Edge>> adjList = new HashMap<>();
+    public final Map<Node, List<Edge>> adjList = new HashMap<>();
+
+    public KDTree tree;
 
     public void addNode(Node node) {
         adjList.putIfAbsent(node, new ArrayList<>());
@@ -20,6 +22,7 @@ public class Graph {
         addNode(start); // Ensure the start node is added
         addNode(end);   // Ensure the end node is added
         adjList.get(start).add(new Edge(start, end, cost));
+        adjList.get(end).add(new Edge(end, start, cost));
     }
 
     public List<Edge> getNeighbors(Node node) {
