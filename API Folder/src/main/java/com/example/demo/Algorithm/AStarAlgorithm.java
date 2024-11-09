@@ -87,8 +87,8 @@ public class AStarAlgorithm {
         }
         for(Node x:cameFrom.keySet())
         {
-            // System.out.println(x);
-            // System.out.println(cameFrom.get(x));
+            System.out.println(x);
+            System.out.println(cameFrom.get(x));
         }
         // If no path is found, return null
         return reconstructPath(cameFrom, goal,start);
