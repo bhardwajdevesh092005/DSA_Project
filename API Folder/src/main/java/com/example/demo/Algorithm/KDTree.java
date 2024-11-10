@@ -60,15 +60,12 @@ public class KDTree {
         }
 
         double distance = calculateDistance(current, target);
-        if (!current.equals(target))
-        {
         if (pq.size() < k) {
             pq.add(new NodeDistance(current, distance));
         } else if (distance < pq.peek().distance) {
             pq.poll();
             pq.add(new NodeDistance(current, distance));
         }
-    }
 
         int axis = depth % 2;
         Node next = (axis == 0 ? target.latitude < current.latitude : target.longitude < current.longitude) ? current.left : current.right;
